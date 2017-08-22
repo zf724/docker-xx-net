@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:2-alpine
 
 ENV VERSION 1.3.1
 
@@ -19,16 +19,20 @@ ENV PROXY_USER none
 ENV PROXY_PASSWD none
 ENV SYSTEM_LOG_FILE 0
 
-ADD https://github.com/xyuanmu/XX-Mini/releases/download/${VERSION}/XX-Mini_linux_darwin_v${VERSION}.zip .
-
 WORKDIR /usr/src/app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+ADD https://github.com/xyuanmu/XX-Mini/releases/download/${VERSION}/XX-Mini_linux_darwin_v${VERSION}.zip .
+#ADD XX-Mini_linux_darwin_v${VERSION}.zip .
+
+RUN set -xe \
+    && unzip XX-Mini_linux_darwin_v${VERSION}.zip \
+    && rm XX-Mini_linux_darwin_v${VERSION}.zip
 
 ADD https://raw.githubusercontent.com/zf724/docker-xx-net/master/entrypoint.sh /entrypoint.sh
+#ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE ${LISTEN_PORT} ${PAC_PORT}
 
 ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/bin/sh"]
