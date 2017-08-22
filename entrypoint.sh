@@ -5,20 +5,58 @@
   echo "ip = ${LISTEN_IP}"; \
   echo ";默认使用8087作为代理端口，如有需要可以修改"; \
   echo "port = ${LISTEN_PORT}"; \
+} > manual.ini
+
+if [ ${LISTEN_USERNAME} != "none" ] && [ ${LISTEN_USERNAME} != "NONE" ];then
+{ \
   echo ";局域网代理认证用户名，留空不开启认证"; \
   echo "username = ${LISTEN_USERNAME}"; \
   echo ";代理认证密码"; \
   echo "password = ${LISTEN_PASSWORD}"; \
+} >> manual.ini
+else
+{ \
+  echo ";局域网代理认证用户名，留空不开启认证"; \
+  echo "username ="; \
+  echo ";代理认证密码"; \
+  echo "password ="; \
+} >> manual.ini
+fi
+
+{ \
   echo ";启动后是否隐藏 goagent 窗口，0为隐藏（最小化至托盘），1为显示"; \
   echo "visible = 0"; \
   echo ";是否显示详细debug信息"; \
   echo "debuginfo = 0"; \
   echo ""; \
   echo "[gae]"; \
+} >> manual.ini
+
+if [ ${GAE_APPID} != "none" ] && [ ${GAE_APPID} != "NONE" ];then
+{ \
   echo ";添加你自己的appid，多个用竖线 | 分隔"; \
   echo "appid = ${GAE_APPID}"; \
+} >> manual.ini
+else
+{ \
+  echo ";添加你自己的appid，多个用竖线 | 分隔"; \
+  echo "appid ="; \
+} >> manual.ini
+fi
+
+if [ ${GAE_PASSWORD} != "none" ] && [ ${GAE_PASSWORD} != "NONE" ];then
+{ \
   echo ";appid密码，无可不填"; \
   echo "password = ${GAE_PASSWORD}"; \
+} >> manual.ini
+else
+{ \
+  echo ";appid密码，无可不填"; \
+  echo "password ="; \
+} >> manual.ini
+fi
+
+{ \
   echo ""; \
   echo ";类似于系统 hosts 功能，指定各网站连接方式为 direct(直接通过IP连接) 或 gae(通过gae连接)"; \
   echo "[hosts]"; \
@@ -62,8 +100,21 @@
   echo "type = ${PROXY_TYPE}"; \
   echo "host = ${PROXY_HOST}"; \
   echo "port = ${PROXY_PORT}"; \
+} >> manual.ini
+
+if [ ${PROXY_USER} != "none" ] && [ ${PROXY_USER} != "NONE" ];then
+{ \
   echo "user = ${PROXY_USER}"; \
   echo "passwd = ${PROXY_PASSWD}"; \
+} >> manual.ini
+else
+{ \
+  echo "user ="; \
+  echo "passwd ="; \
+} >> manual.ini
+fi
+
+{ \
   echo ""; \
   echo "[google_ip]"; \
   echo ";开启 IPv6 选项，1开启，0关闭，慎重！"; \
