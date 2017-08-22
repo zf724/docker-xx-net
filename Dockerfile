@@ -1,4 +1,4 @@
-FROM python:2-alpine
+FROM python:2
 
 ENV VERSION 1.3.1
 
@@ -25,8 +25,14 @@ ADD https://github.com/xyuanmu/XX-Mini/releases/download/${VERSION}/XX-Mini_linu
 #ADD XX-Mini_linux_darwin_v${VERSION}.zip .
 
 RUN set -xe \
+    && apt-get update \
+    && apt-get install unzip
+
+RUN set -xe \
     && unzip XX-Mini_linux_darwin_v${VERSION}.zip \
     && rm XX-Mini_linux_darwin_v${VERSION}.zip
+
+RUN pip install --no-cache-dir pyopenssl
 
 ADD https://raw.githubusercontent.com/zf724/docker-xx-net/master/entrypoint.sh /entrypoint.sh
 #ADD entrypoint.sh /entrypoint.sh
