@@ -1,5 +1,12 @@
 #!/bin/sh
 { \
+  echo "[system]"; \
+  echo "version = ${VERSION}"; \
+#设置成 1 会在data目录生成日志文件 local.log，便调试用"; \
+  echo "log_file = ${SYSTEM_LOG_FILE}"; \
+#设置是否在data目录输出扫描IP日志 scan_ip.log，超过3000行会新建日志"; \
+  echo "log_scan = 1"; \
+  echo ""; \
   echo "[listen]"; \
 #监听地址，如果需要允许局域网/公网使用，设为0.0.0.0即可，若共享pac此项必须设置为 0.0.0.0"; \
   echo "ip = ${LISTEN_IP}"; \
@@ -81,9 +88,9 @@ fi
 #下载分流，建议使用默认值"; \
   echo "[autorange]"; \
 #线程数，当观看视频不流畅可适当增加"; \
-  echo "threads = 20"; \
+  echo "threads = 16"; \
 #分块大小，如果IP质量好可以修改 maxsize 为更大的数值"; \
-  echo "maxsize = 548576"; \
+  echo "maxsize = 524288"; \
   echo ""; \
 #pac 自动配置脚本"; \
   echo "[pac]"; \
@@ -137,27 +144,27 @@ fi
   echo "max_scan_ip_thread_num = 50"; \
 #谷歌IP上限，超过则剔除延时高的IP"; \
   echo "max_good_ip_num = 3000"; \
-#IP连接时间间隔，出现连接不稳定可适当调整"; \
-  echo "ip_connect_interval = 8"; \
 #单个IP连接数，建议别改，容易使IP失效"; \
   echo "max_links_per_ip = 1"; \
+#IP连接时间间隔，出现连接不稳定可适当调整"; \
+  echo "ip_connect_interval = 5"; \
   echo ""; \
 #连接设置，一般无需修改"; \
   echo "[connect_manager]"; \
+  echo "connect_interval = 40"; \
+  echo "max_worker_num = 50"; \
 #最大连接线程"; \
-  echo "https_max_connect_thread = 10"; \
+  echo "https_max_connect_thread = 20"; \
 #每次添加的新连接池数"; \
   echo "https_new_connect_num = 3"; \
 #最小连接池数值"; \
   echo "https_connection_pool_min = 1"; \
 #最大连接池数值"; \
   echo "https_connection_pool_max = 30"; \
-  echo ""; \
-  echo "[system]"; \
-#设置成 1 会在data目录生成日志文件 local.log，便调试用"; \
-  echo "log_file = ${SYSTEM_LOG_FILE}"; \
-#设置是否在data目录输出扫描IP日志 scan_ip.log，超过3000行会新建日志"; \
-  echo "log_scan = 1"; \
+#keep connection pool until no active request timeout
+  echo "keep_active_timeout = 600"; \
+#the time that HTTPS connection can reuse after last transmit, drop it or send new request to keep it alive
+  echo "https_keep_alive = 50"; \
 } >> proxy.ini
 
 python proxy.py
