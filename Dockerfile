@@ -21,7 +21,8 @@ ENV SYSTEM_LOG_FILE 0
 
 RUN set -xe \
     && apk add --no-cache gcc python-dev libffi-dev musl-dev openssl-dev \
-    && pip install --no-cache-dir pyopenssl
+    && pip install --no-cache-dir pyopenssl \
+    && apk del gcc
 
 WORKDIR /usr/src/app
 
