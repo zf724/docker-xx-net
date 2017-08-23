@@ -38,6 +38,8 @@ ADD https://raw.githubusercontent.com/zf724/docker-xx-net/master/entrypoint.sh /
 #ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+VOLUME /usr/src/app/data
+
 EXPOSE ${LISTEN_PORT} ${PAC_PORT}
 
 ENTRYPOINT ["/entrypoint.sh"]
